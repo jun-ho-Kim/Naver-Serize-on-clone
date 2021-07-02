@@ -3,11 +3,13 @@ import PropTypes from "prop-types";
 import Loader from "../../common/Loader";
 import Section from "../Section/Section";
 import Poster from "../Section/Post";
+import { Helmet } from 'react-helmet'; 
 
 
 const MoviePresenter = ({nowPlaying, upcoming, popular, topRated, latest, error, loading}) => 
     loading ? <Loader /> : (
-        <div>
+        <div className='h-screen'>
+        <Helmet><title>영화 | Serise-One</title></Helmet>
             {nowPlaying && nowPlaying.length>0 && (
                 <Section title="최신 영화">
                     {nowPlaying.map(movie => (
@@ -32,14 +34,14 @@ const MoviePresenter = ({nowPlaying, upcoming, popular, topRated, latest, error,
                         imageUrl={movie.poster_path}
                         title={movie.title}
                         rating={movie.vote_average}
-                        year={movie.release_date.substring(0,4)}
+                        // year={movie.release_date.substring(0,4)}
                         isMovie={true}
                     />
                         ))}
                 </Section>
             )}
             {upcoming && upcoming.length>0 && (
-                <Section title="Upcoming Movies">
+                <Section title="개봉예정 영화">
                     {upcoming.map(movie=>(
                     <Poster
                         key={movie.id}
@@ -54,7 +56,7 @@ const MoviePresenter = ({nowPlaying, upcoming, popular, topRated, latest, error,
                 </Section>
             )}
             {topRated && topRated.length>0 && (
-                <Section title="TOP10 영화">
+                <Section title="역대 TOP20 영화">
                     {topRated.map(movie => (
                     <Poster
                         key={movie.id}

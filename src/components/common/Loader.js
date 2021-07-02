@@ -11,7 +11,7 @@ import React from "react";
 // `;
 
 export default () => (
-    <div>
+    <div className='h-screen'>
         <span role="img" aria-lable="Loading">
         {/* <span> */}
             ⏰

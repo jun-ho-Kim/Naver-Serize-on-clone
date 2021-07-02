@@ -3,9 +3,12 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import Loader from "../../common/Loader";
 import Favorite from "../Section/favorite";
+import {Comment} from "../Section/Comment";
+import { Helmet } from 'react-helmet'; 
+import { Video } from "../Section/Video";
 
 const Container = styled.div`
-    margin-left: 15%;
+    margin-left: 20%;
     padding: 50px;
     height: calc(100vh - 50px);
     width:100%;
@@ -17,8 +20,9 @@ const Backdrop = styled.div`
     position: absolute;
     top: 0;
     left: 0;
-    width: 70%;
-    height: 70%;
+    width: 60%;
+    height: 65%;
+    justify-content: center;
     background-image: url(${props => props.bgImage});
     background-position: center center;
     background-size: cover;
@@ -29,7 +33,7 @@ const Backdrop = styled.div`
 
 `;
 const Content = styled.div`
-    margin-left: 6%;
+    // margin-left: 6%;
     display: flex;
     width: 100%;
     height:100%;
@@ -46,6 +50,7 @@ const Cover = styled.div`
 const Data = styled.div`
     width: 65%;
     margin-left: 15px;
+
 `;
 const TitleImdb = styled.div`
     /* width: 80%;  */
@@ -69,22 +74,12 @@ const Title = styled.h3`
 `;
 
 const ImdbIcon = styled.div` 
-    /* width: 65px;
-    height: 32px;
-    background-color: #E2B616;
-    color: black;
-    font-size: 19px;
-    border-radius: 3px;
-    font-weight: 800;
-    margin-left: 15px; */
     display: flex;
     justify-content: center;
     align-items: center;
 `;
-const ImdbLink = styled.a`
-    /* width: 65px;
-    height: 32px; */    
-    width: 40px;
+const ImdbLink = styled.a` 
+    width: 55px;
     height: 22px;
 
     background-color: #E2B616;
@@ -122,6 +117,7 @@ const ItemContainer = styled.div`
 const Item = styled.span`
     /* display:flex; */
     /* margin-bottom: 8px; */
+    max-width:50%;
 `;
 const Divider = styled.span`
     padding: 0px 10px;
@@ -131,13 +127,14 @@ const Overview = styled.p`
     opacity: 0.7;
     line-height: 1.5;
     /* min-width:60%; */
-    max-width:70%;
+    max-width:50%;
 `;
 
-const DetailPresenter = ({id, result, loading, isMovie}) => 
+const DetailPresenter = ({id, result, loading, isMovie, videoKey}) => 
     loading ? <Loader /> : (
         <>
         <Container>
+        <Helmet><title>상세정보 | Serise-One</title></Helmet>
             {/* {console.log("externalResult:", externalResult)} */}
             {result.backdrop_path && 
             <Backdrop
@@ -146,10 +143,6 @@ const DetailPresenter = ({id, result, loading, isMovie}) =>
                 : require("../../assets/noPosterSmall.png")} />
             }
             <Content>
-                {isMovie === true ?
-                    <Favorite isMovie={isMovie} title={result.title} coverImg={result.poster_path} movieId={id} userId={localStorage.getItem('userId')} />
-                : <Favorite isMovie={isMovie} showId={id} userId={localStorage.getItem('userId')} />
-                }
                 <Cover
                     bgImage={
                         result.poster_path
@@ -161,7 +154,7 @@ const DetailPresenter = ({id, result, loading, isMovie}) =>
                     <TitleImdb>
                     {/* <Liked onClick={toggleAway}>
                             {currentLiked ? "💖" : "🤍"}
-                    </Liked>                            */}
+                        </Liked>                            */}
                         <Title>
                             {result.title
                             ? result.title
@@ -176,7 +169,7 @@ const DetailPresenter = ({id, result, loading, isMovie}) =>
                         }
                         {/* {externalResult.imdb_id &&
                             <ImdbLink href={`https://www.imdb.com/title/${externalResult.imdb_id}`}>
-                                IMDB
+                            IMDB
                             </ImdbLink>
                         } */}
                         
@@ -186,6 +179,10 @@ const DetailPresenter = ({id, result, loading, isMovie}) =>
                         </Liked>                     */}
                         </ImdbIcon>
                         </Item>
+                        {isMovie === true ?
+                            <Favorite isMovie={isMovie} title={result.title} coverImg={result.poster_path} movieId={id} userId={localStorage.getItem('userId')} />
+                        : <Favorite isMovie={isMovie} showId={id} title={result.name} coverImg={result.poster_path} userId={localStorage.getItem('userId')} />
+                        }
     
                     </TitleImdb>
                     <ItemContainer>
@@ -218,7 +215,9 @@ const DetailPresenter = ({id, result, loading, isMovie}) =>
                 </Data>
             </Content>
         </Container>
-            </>
+        <Video videoKey={videoKey} />
+        <Comment postId={id} />
+        </>
     )
     ;
     

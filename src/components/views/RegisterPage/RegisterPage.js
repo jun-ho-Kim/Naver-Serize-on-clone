@@ -11,10 +11,10 @@ import moment from "moment";
 
 function RegisterPage(props) {
   const {getValues, register, handleSubmit, errors, formState} = useForm();
-  const {email, password, nickName} = getValues();
+  const {email, password, name, lastname} = getValues();
   const dispatch = useDispatch();
 
-
+    
       // initialValues={{
       //   email: '',
       //   lastName: '',
@@ -28,8 +28,8 @@ function RegisterPage(props) {
           let dataToSubmit = {
             email,
             password,
-            name: nickName,
-            lastname: "",
+            name,
+            lastname,
             image: `http://gravatar.com/avatar/${moment().unix()}?d=identicon`
           };
 
@@ -48,7 +48,7 @@ function RegisterPage(props) {
         return (
           <div className="w-screen h-screen min-w-max flex justify-center">
             <Helmet>
-                <title>회원가입 | Podspike</title>
+                <title>회원가입 | Serise-One</title>
             </Helmet>
             <div className='font-bold'>
             <h1
@@ -74,18 +74,28 @@ function RegisterPage(props) {
                 />
                 {errors.email?.message && <FormError error={errors.email?.message} />}
                 {errors.email?.type === "pattern" && <FormError error="이메일을 입력해주세요" />}
-                <label>별명</label>
+                <label>이름</label>
                 <input
                     className="border font-bold border-gray-400 rounded-md py-3 px-5 focus:ring-1 focus:ring-black focus:ring-offset-1 focus:ring-offset-gray-500 focus:ring-opacity-80 outline-none transition duration-500"
                     ref={register({
                         required: "닉네임을 입력해주세요."
                     })}
-                    name="nickName"
+                    name="name"
                     type="text"
-                    placeholder="닉네임"
+                    placeholder="이름"
                 />
                 {errors.nickName?.message && <FormError error={errors.nickName?.message} />}
-                {errors.nickName?.type === "pattern" && <FormError error="닉네임을 입력해주세요" />}          
+                {errors.nickName?.type === "pattern" && <FormError error="닉네임을 입력해주세요" />}
+                <label>성</label>
+                <input
+                    className="border font-bold border-gray-400 rounded-md py-3 px-5 focus:ring-1 focus:ring-black focus:ring-offset-1 focus:ring-offset-gray-500 focus:ring-opacity-80 outline-none transition duration-500"
+                    ref={register({
+                        required: "닉네임을 입력해주세요."
+                    })}
+                    name="lastname"
+                    type="text"
+                    placeholder="이름"
+                />        
                 <label>비밀번호</label>      
                 <input
                     className="border font-bold border-gray-400 rounded-md py-3 px-5 focus:ring-1 focus:ring-black focus:ring-offset-1 focus:ring-offset-gray-500 focus:ring-opacity-80 outline-none transition duration-500"

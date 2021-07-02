@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { withRouter } from "react-router-dom";
+import { useHistory, withRouter } from "react-router-dom";
 import { loginUser } from "../../../_actions/user_actions";
 import { Link } from "react-router-dom";
 import { Helmet } from 'react-helmet'; 
@@ -9,13 +9,15 @@ import { Button } from '../../common/button';
 import { FormError } from '../../common/form-error'
 
 
-function LoginPage(props) {
-  const {getValues, register, handleSubmit, errors, formState} = useForm();
+export const LoginPage = () => {
+  const {register, getValues, handleSubmit, errors, formState} = useForm();
+  const history = useHistory();
   const {email, password} = getValues();
   const dispatch = useDispatch();
 
   const [formErrorMessage, setFormErrorMessage] = useState('')
 
+  console.log("email password", email,password)
   const handleOnSubmit = () => {
     setTimeout(() => {
       let dataToSubmit = {
@@ -27,7 +29,7 @@ function LoginPage(props) {
           if (response.payload.loginSuccess) {
             window.localStorage.setItem('userId', response.payload.userId);
             alert("로그인이 완료되었습니다.")
-            props.history.push("/");
+            history.push("/");
           } else {
             setFormErrorMessage('이메일이나 비밀번호를 다시 확인해주세요.')
           }
@@ -39,11 +41,11 @@ function LoginPage(props) {
     }
         return (
           <div className={'min-h-screen flex justify-center text-black'}>
-          <Helmet><title>login | Podspike</title></Helmet>
+          <Helmet><title>login | Serise-One</title></Helmet>
           <div>
           <h1
               className='mb-8 text-2xl font-bold text-center'
-          >Login</h1>
+          >로그인</h1>
           
           <form
               className={'grid gap-6'}
@@ -51,11 +53,11 @@ function LoginPage(props) {
           >  
               <input
                   className="border font-bold border-gray-400 rounded-md py-3 px-5 focus:ring-1 focus:ring-black focus:ring-offset-1 focus:ring-offset-gray-500 focus:ring-opacity-80 outline-none transition duration-500"
-                  name="email"
                   ref={
-                      register({required: "이메일을 입력해주세요",
-                      pattern: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                    register({required: "이메일을 입력해주세요",
+                    pattern: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
                   })}
+                  name="email"
                   type="email"
                   placeholder="이메일"
                   size={27}
@@ -94,6 +96,6 @@ function LoginPage(props) {
   );
 };
 
-export default withRouter(LoginPage);
+// export default withRouter(LoginPage);
 
 

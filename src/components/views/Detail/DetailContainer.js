@@ -6,6 +6,7 @@ import DetailPresenter from "./DetailPresenter";
 export default function DetailContainer() {
     const [result, setResult] = useState();
     const [loading, setLoading] = useState(true);
+    const [videoKey, setVideoKey] = useState();
     const {pathname} = useLocation();
     const {id} = useParams();
     const isMovie = pathname.includes('/movie/');
@@ -18,6 +19,11 @@ export default function DetailContainer() {
                 ({data: result} = await moviesApi.movieDetail(parseId));
                 setResult(result);
                 console.log("movie result", result);
+                if(result.videos.results[0].key) {
+                    setVideoKey(result.videos.results[0].key) 
+                } else {
+                    setVideoKey(null)
+                }
             } else {
                 ({data: result} = await tvApi.showDetail(parseId));
                 setResult(result);
@@ -28,8 +34,9 @@ export default function DetailContainer() {
         } finally {
             setResult(result);
             setLoading(false);
+
+            }
         }
-    }
     useEffect(() => {
         fetchData();
     }, [])
@@ -42,6 +49,7 @@ export default function DetailContainer() {
             result={result}
             isMovie={isMovie}
             loading={loading}
+            videoKey={videoKey}
         />
         </>
     )

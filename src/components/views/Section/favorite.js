@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -11,6 +12,7 @@ const Container = styled.div`
     }`;
 
 function Favorite(props) {
+    const history = useHistory();
     console.log("like props", props)
     const [favorited, setFavorited] = useState(false);
     const [favoriteNumber, setFavoriteNumber] = useState(0);
@@ -22,6 +24,10 @@ function Favorite(props) {
         variable = {showId : props.showId, userId: props.userId}
     }
     const handleLikeClick = async () => {
+        if(!localStorage.getItem('userId')) {
+            alert("로그인 후 이용해주세요");
+            history.push('/login');
+        }
         if(!favorited) {
             await axios.post('/api/favorite/addToFavorite', variable)
             .then(response => {
@@ -74,8 +80,8 @@ function Favorite(props) {
         fetchData();
     }, [])
     return (
-        <div>
-            <span onClick={handleLikeClick}>{favorited ? '❤' : '🤍'} </span>
+        <div className='flex  text-lg'>
+            <span className='mx-2' onClick={handleLikeClick}>{favorited ? '❤' : '🤍'} </span>
             <Container>{favoriteNumber}</Container>
         </div>
     )

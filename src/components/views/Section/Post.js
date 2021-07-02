@@ -61,7 +61,7 @@ const Poster = ({id, imageUrl, title, rating, year, isMovie = false}) => (
                     </Rating>
             </ImageContainer>
             <Title>{title.length>18? `${title.substring(0,18)}...`:title}</Title>
-            <Year>{year}</Year>
+            <Year>{year && year}</Year>
         </Container>
     </Link>
 );

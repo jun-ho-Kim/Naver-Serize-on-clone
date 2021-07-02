@@ -2,10 +2,14 @@ import React from "react";
 import Loader from "../../common/Loader";
 import Section from "../Section/Section";
 import Poster from "../Section/Post";
+import { Helmet } from 'react-helmet'; 
 
 const TVPresenter = ({topRated, popular, err, loading}) => 
     loading? <Loader /> : (
         <div>
+            <Helmet>
+                <title>TV | Serise-One</title>
+            </Helmet>        
             {topRated && topRated.length > 0 && (
                 <Section title="top 100 방송">
                     {topRated.map((show) => (

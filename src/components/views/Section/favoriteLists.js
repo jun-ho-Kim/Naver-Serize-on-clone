@@ -1,7 +1,8 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components';
-
+import { Helmet } from 'react-helmet'; 
+import Loader from '../../common/Loader';
 
 const Container = styled.div`
     // height: calc(100vh - 50px);
@@ -49,6 +50,7 @@ const FavoriteButton = styled.button`
 function FavoriteLists() {
     const [FavoriteLists, setFavoriteLists] = useState();
     const [DeleteOk, setDeleteOk] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const handleOnClick = async(movieId) => {
         let variable;
@@ -73,21 +75,32 @@ function FavoriteLists() {
     }
 
     const fetchData = async() => {
-        const variable = { userId: localStorage.getItem('userId') };
-        await axios.post('/api/favorite/favoriteLists', variable)
-        .then(response => {
-            if(response.data.success) {
-                setFavoriteLists(response.data.lists);
-            } else {
-                alert('관심 목록을 불러오지 못했습니다.')
-            }
-        });
+        try {
+            setLoading(true);
+            const variable = { userId: localStorage.getItem('userId') };
+            await axios.post('/api/favorite/favoriteLists', variable)
+            .then(response => {
+                if(response.data.success) {
+                    setFavoriteLists(response.data.lists);
+                } else {
+                    alert('관심 목록을 불러오지 못했습니다.')
+                }
+            });
+        } catch(error) {
+            console.log("error", error);
+        } finally {
+            setLoading(false);
+        }
     }
     useEffect(() => {
         fetchData();
     }, [DeleteOk])
     return (
         <Container>
+            <Helmet>
+                <title>관심목록 | Serise-One</title>
+            </Helmet>
+        {loading && <Loader />}            
         {FavoriteLists && (
             <Content>
             {FavoriteLists.map(movie => (
